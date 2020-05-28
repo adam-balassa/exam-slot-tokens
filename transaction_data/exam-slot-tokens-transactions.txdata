@@ -1,0 +1,44 @@
+[
+    {
+        "transactionName": "examSlotTokensExists",
+        "transactionLabel": "A test examSlotTokensExists transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "createExamSlotTokens",
+        "transactionLabel": "A test createExamSlotTokens transaction",
+        "arguments": [
+            "001",
+            "some value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "readExamSlotTokens",
+        "transactionLabel": "A test readExamSlotTokens transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "updateExamSlotTokens",
+        "transactionLabel": "A test updateExamSlotTokens transaction",
+        "arguments": [
+            "001",
+            "some other value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "deleteExamSlotTokens",
+        "transactionLabel": "A test deleteExamSlotTokens transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    }
+]
