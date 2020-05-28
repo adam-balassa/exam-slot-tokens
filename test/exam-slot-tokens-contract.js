@@ -31,20 +31,24 @@ class TestContext {
 }
 
 let testExams = [
-    { date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
-       { owner: '1', requestedBy: null },
-       { owner: '2', requestedBy: '4' },
-       { owner: '3', requestedBy: null },
-       { owner: null, requestedBy: null },
-       { owner: null, requestedBy: null },
-    ]},
-    { date: new Date(2020, 5, 1, 10).toISOString(), tokens: [
-        { owner: '5', requestedBy: null },
-        { owner: '6', requestedBy: '8' },
-        { owner: '7', requestedBy: null },
-        { owner: null, requestedBy: null },
-        { owner: null, requestedBy: null },
-    ]}
+    {
+        date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
+            { owner: '1', requestedBy: null },
+            { owner: '2', requestedBy: '4' },
+            { owner: '3', requestedBy: null },
+            { owner: null, requestedBy: null },
+            { owner: null, requestedBy: null },
+        ]
+    },
+    {
+        date: new Date(2020, 5, 1, 10).toISOString(), tokens: [
+            { owner: '5', requestedBy: null },
+            { owner: '6', requestedBy: '8' },
+            { owner: '7', requestedBy: null },
+            { owner: null, requestedBy: null },
+            { owner: null, requestedBy: null },
+        ]
+    }
 ];
 
 let testCoins = [
@@ -56,7 +60,7 @@ let testCoins = [
     { id: '6', wallet: 1000 },
     { id: '7', wallet: 1000 },
     { id: '8', wallet: 0 },
-] 
+];
 
 describe('ExamSlotTokensContract', () => {
 
@@ -69,20 +73,24 @@ describe('ExamSlotTokensContract', () => {
 
 
         testExams = [
-            { date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
-               { owner: '1', requestedBy: null },
-               { owner: '2', requestedBy: '4' },
-               { owner: '3', requestedBy: '7' },
-               { owner: null, requestedBy: null },
-               { owner: null, requestedBy: null },
-            ]},
-            { date: new Date(2020, 5, 1, 10).toISOString(), tokens: [
-                { owner: '5', requestedBy: null },
-                { owner: '6', requestedBy: '8' },
-                { owner: '7', requestedBy: null }
-            ]}
+            {
+                date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
+                    { owner: '1', requestedBy: null },
+                    { owner: '2', requestedBy: '4' },
+                    { owner: '3', requestedBy: '7' },
+                    { owner: null, requestedBy: null },
+                    { owner: null, requestedBy: null },
+                ]
+            },
+            {
+                date: new Date(2020, 5, 1, 10).toISOString(), tokens: [
+                    { owner: '5', requestedBy: null },
+                    { owner: '6', requestedBy: '8' },
+                    { owner: '7', requestedBy: null }
+                ]
+            }
         ];
-        
+
         testCoins = [
             { id: '1', wallet: 1000 },
             { id: '2', wallet: 1000 },
@@ -93,9 +101,9 @@ describe('ExamSlotTokensContract', () => {
             { id: '7', wallet: 1000 },
             { id: '8', wallet: 10 },
             { id: '9', wallet: 1000 },
-        ];        
+        ];
 
-        ctx.clientIdentity.getID = function() { return '1' };
+        ctx.clientIdentity.getID = function () { return '1'; };
 
         ctx.stub.getState.withArgs('EXAMS').resolves(Buffer.from(JSON.stringify(testExams)));
         ctx.stub.getState.withArgs('COINS').resolves(Buffer.from(JSON.stringify(testCoins)));
@@ -103,7 +111,7 @@ describe('ExamSlotTokensContract', () => {
 
     describe('#register', () => {
         it('user should be registred', async () => {
-            ctx.clientIdentity.getID = function() { return '10'; }
+            ctx.clientIdentity.getID = function () { return '10'; };
             await contract.register(ctx);
             testCoins.push({ id: '10', wallet: 2000 });
             ctx.stub.putState.should.have.been.calledOnceWithExactly('COINS', Buffer.from(JSON.stringify(testCoins)));
@@ -125,11 +133,11 @@ describe('ExamSlotTokensContract', () => {
 
     describe('#getWallet', () => {
         it('should return a wallet', async () => {
-            await contract.getAccountWallet(ctx).should.eventually.equal(1000)
+            await contract.getAccountWallet(ctx).should.eventually.equal(1000);
         });
 
         it('should throw if user does not exist', async () => {
-            ctx.clientIdentity.getID = function() { return 'hibliblihablalbla'; }
+            ctx.clientIdentity.getID = function () { return 'hibliblihablalbla'; };
             await contract.getAccountWallet(ctx).should.be.rejectedWith(/User is not registered/);
         });
     });
@@ -141,7 +149,7 @@ describe('ExamSlotTokensContract', () => {
         });
 
         it('should return null when invalid client', async () => {
-            ctx.clientIdentity.getID = function() { return '8'; }
+            ctx.clientIdentity.getID = function () { return '8'; };
             await contract.getMyToken(ctx).should.eventually.equal(null);
         });
     });
@@ -161,15 +169,17 @@ describe('ExamSlotTokensContract', () => {
     describe('#extendExamSlot', () => {
         it('shoud extend an exam slot', async () => {
             await contract.extendExamSlot(ctx, 2020, 4, 31, 10, 2);
-            testExams[0] = { date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
-                { owner: null, requestedBy: null },
-                { owner: null, requestedBy: null },
-                { owner: '1', requestedBy: null },
-                { owner: '2', requestedBy: '4' },
-                { owner: '3', requestedBy: '7' },
-                { owner: null, requestedBy: null },
-                { owner: null, requestedBy: null }
-             ]}
+            testExams[0] = {
+                date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
+                    { owner: null, requestedBy: null },
+                    { owner: null, requestedBy: null },
+                    { owner: '1', requestedBy: null },
+                    { owner: '2', requestedBy: '4' },
+                    { owner: '3', requestedBy: '7' },
+                    { owner: null, requestedBy: null },
+                    { owner: null, requestedBy: null }
+                ]
+            };
             ctx.stub.putState.should.have.been.calledOnceWithExactly('EXAMS', Buffer.from(JSON.stringify(testExams)));
         });
 
@@ -179,15 +189,17 @@ describe('ExamSlotTokensContract', () => {
     });
     describe('#applyForExam', () => {
         it('student should acquire a token', async () => {
-            ctx.clientIdentity.getID = function() { return '8'; }
+            ctx.clientIdentity.getID = function () { return '8'; };
             await contract.applyForExam(ctx, 2020, 4, 31, 10);
-            testExams[0] = { date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
-                { owner: '1', requestedBy: null },
-                { owner: '2', requestedBy: '4' },
-                { owner: '3', requestedBy: '7' },
-                { owner: '8', requestedBy: null },
-                { owner: null, requestedBy: null }
-             ]}
+            testExams[0] = {
+                date: new Date(2020, 4, 31, 10).toISOString(), tokens: [
+                    { owner: '1', requestedBy: null },
+                    { owner: '2', requestedBy: '4' },
+                    { owner: '3', requestedBy: '7' },
+                    { owner: '8', requestedBy: null },
+                    { owner: null, requestedBy: null }
+                ]
+            };
             ctx.stub.putState.should.have.been.calledOnceWithExactly('EXAMS', Buffer.from(JSON.stringify(testExams)));
         });
 
@@ -200,11 +212,11 @@ describe('ExamSlotTokensContract', () => {
         });
 
         it('should throw an exception if slot is full', async () => {
-            ctx.clientIdentity.getID = function() { return '8'; }
+            ctx.clientIdentity.getID = function () { return '8'; };
             await contract.applyForExam(ctx, 2020, 5, 1, 10).should.be.rejectedWith(/Exam slot is full :\(/);
-        })
+        });
     });
-    
+
     describe('#burnExamToken', () => {
         it('tokens should be burnt', async () => {
             await contract.burnExamTokens(ctx, 2020, 4, 31, 10);
@@ -213,58 +225,58 @@ describe('ExamSlotTokensContract', () => {
         });
 
         it('should throw if exam doesn\'t exist', async () => {
-            await contract.burnExamTokens(ctx, 2020, 4, 31, 11).should.be.rejectedWith(/The requested exam does not exist/)
+            await contract.burnExamTokens(ctx, 2020, 4, 31, 11).should.be.rejectedWith(/The requested exam does not exist/);
         });
     });
 
     describe('#changeExamTokenOwner', () => {
         it('tokens should change owner', async () => {
-            ctx.clientIdentity.getID = function() { return '2'; }
+            ctx.clientIdentity.getID = function () { return '2'; };
             await contract.sellMyExamToken(ctx);
             testExams[0].tokens = [
                 { owner: '1', requestedBy: null },
                 { owner: '4', requestedBy: null },
                 { owner: '3', requestedBy: '7' },
                 { owner: null, requestedBy: null },
-                { owner: null, requestedBy: null }]
+                { owner: null, requestedBy: null }];
             ctx.stub.putState.should.have.been.calledWith('EXAMS', Buffer.from(JSON.stringify(testExams)));
         });
         it('money should be transferred', async () => {
-            ctx.clientIdentity.getID = function() { return '2'; }
+            ctx.clientIdentity.getID = function () { return '2'; };
             await contract.sellMyExamToken(ctx);
-            testCoins[1].wallet += 1000
-            testCoins[3].wallet -= 1000
+            testCoins[1].wallet += 1000;
+            testCoins[3].wallet -= 1000;
             ctx.stub.putState.should.have.been.calledWith('COINS', Buffer.from(JSON.stringify(testCoins)));
         });
 
         it('should throw if nobody requested token', async () => {
-            await contract.sellMyExamToken(ctx).should.be.rejectedWith(/Nobody needs your token :P/)
+            await contract.sellMyExamToken(ctx).should.be.rejectedWith(/Nobody needs your token :P/);
         });
         it('should throw requester doesn\'t have money', async () => {
-            ctx.clientIdentity.getID = function() { return '6'; }
-            await contract.sellMyExamToken(ctx).should.be.rejectedWith(/Requester does not have the required balance/)
+            ctx.clientIdentity.getID = function () { return '6'; };
+            await contract.sellMyExamToken(ctx).should.be.rejectedWith(/Requester does not have the required balance/);
         });
         it('should throw requester already has a token', async () => {
-            ctx.clientIdentity.getID = function() { return '3'; }
-            await contract.sellMyExamToken(ctx).should.be.rejectedWith(/Requester already has a token/)
+            ctx.clientIdentity.getID = function () { return '3'; };
+            await contract.sellMyExamToken(ctx).should.be.rejectedWith(/Requester already has a token/);
         });
     });
 
     describe('#requestToken', () => {
         it('request should be successful', async () => {
-            ctx.clientIdentity.getID = function() { return '4'; }
+            ctx.clientIdentity.getID = function () { return '4'; };
             await contract.requestToken(ctx, '1');
             testExams[0].tokens = [
                 { owner: '1', requestedBy: '4' },
                 { owner: '2', requestedBy: '4' },
                 { owner: '3', requestedBy: '7' },
                 { owner: null, requestedBy: null },
-                { owner: null, requestedBy: null },]
+                { owner: null, requestedBy: null },];
             ctx.stub.putState.should.have.been.calledOnceWithExactly('EXAMS', Buffer.from(JSON.stringify(testExams)));
         });
 
         it('should throw if requested does not have a token', async () => {
-            await contract.requestToken(ctx, '4').should.be.rejectedWith(/This user does not posess a token/)
+            await contract.requestToken(ctx, '4').should.be.rejectedWith(/This user does not posess a token/);
         });
     });
 });
